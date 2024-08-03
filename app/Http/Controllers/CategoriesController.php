@@ -111,6 +111,48 @@ class CategoriesController extends Controller
         ], 200);
     }
 
+    // fetch menu
+    public function indexMenu(Request $request)
+    {
+        $mealsQuery = Meal::where('status', 1);
+        if ($request->has('category_id')) {
+            $mealsQuery->where('category_id', $request->category_id);
+        }
+        $meals = $mealsQuery->get()->map(function ($meal) {
+            return $this->DataMeal($meal);
+        })->toArray();
+    
+        $addonsQuery = Addon::where('status', 1);
+        if ($request->has('category_id')) {
+            $addonsQuery->where('category_id', $request->category_id);
+        }
+        $addons = $addonsQuery->get()->map(function ($addon) {
+            $addonArray = $addon->toArray();
+            unset($addonArray['created_at'], $addonArray['updated_at']); 
+            return $addonArray;
+        })->toArray();
+    
+        $extrasQuery = Extra::where('status', 1);
+        if ($request->has('category_id')) {
+            $extrasQuery->where('category_id', $request->category_id);
+        }
+        $extras = $extrasQuery->get()->map(function ($extra) {
+            $extraArray = $extra->toArray();
+            unset($extraArray['created_at'], $extraArray['updated_at']); 
+            return $extraArray;
+        })->toArray();
+    
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'meals' => $meals,
+                'addons' => $addons,
+                'extras' => $extras,
+            ],
+        ], 200);
+    }
+    
+
     public function index(Request $request){
         $categories = Category::all();
         

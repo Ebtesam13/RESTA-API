@@ -184,7 +184,6 @@ class ExtraController extends Controller
     
             // Handle the image upload
             if ($request->hasFile('image')) {
-                // Delete old image if exists
                 if ($extra->image) {
                     Storage::disk('public')->delete($extra->image);
                 }
@@ -195,7 +194,7 @@ class ExtraController extends Controller
             }
     
             $extra->update($request->except('image'));
-            return response()->json(['status' => 'success', 'data' => $extra], 200);
+            return response()->json(['status' => 'success', 'message' => "extra has been updated successfully"], 200);
         }
         return response()->json(['status' => 'failed', 'error' => 'Extra not found'], 404);
     }

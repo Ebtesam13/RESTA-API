@@ -21,6 +21,7 @@ use  App\Http\Controllers\CategoriesController;
 
     Route::get('/AllItems',[CategoriesController::class,'AllItems'] );
     Route::get('/products',[CategoriesController::class,'indexProducts'] );
+    Route::get('/menu',[CategoriesController::class,'indexMenu'] );
     Route::get('/categories',[CategoriesController::class,'index'] );
     Route::get('/categories/{id}', [CategoriesController::class, 'getCategoryById']);
 
