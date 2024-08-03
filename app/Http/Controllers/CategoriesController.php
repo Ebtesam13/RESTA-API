@@ -160,16 +160,17 @@ class CategoriesController extends Controller
             return response()->json(['status'=>'failed','message' => 'No categories found'], 404);
         }
 
-        return response()->json(['status'=>'Ok','data' => $categories], 200);
+        return response()->json(['status'=>'success','data' => $categories], 200);
 
     }
+
     public function getCategoryById($id)
     {
         $category = Category::with('meals','addons','extras')->find($id);
         if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
+            return response()->json(['message' => 'Category not found','status'=>'failed'], 404);
         }
-        return response()->json(['data' => $category, 'status' => 'Ok'], 200);
+        return response()->json(['data' => $category, 'status' => 'success'], 200);
     }
 
     public function addNewCategory(Request $request)
@@ -182,12 +183,8 @@ class CategoriesController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors(),'status'=>'Failed'], 400);
+            return response()->json(['message' => $validator->errors(),'status'=>'failed'], 400);
         }
-    
-        // if (Category::where('name', $request->name)->exists()) {
-        //     return response()->json(['message' => 'Category already exists','status'=>'Conflict'], 409);
-        // }
     
         $data = $request->only('name', 'description' ,'status');
     
@@ -197,9 +194,9 @@ class CategoriesController extends Controller
         }
     
         $newCategory = Category::create($data);
-        $responseData = array_merge($newCategory->toArray(), ['status' => $newCategory->status]);
+        // $responseData = array_merge($newCategory->toArray(), ['status' => $newCategory->status]);
 
-        return response()->json(['data' => $responseData, 'status' => 'Created'], 201);
+        return response()->json(['message' => "The addon has been added successfully", 'status' => 'success'], 201);
     }
     
     public function updateCategory(Request $request, $id)
@@ -211,12 +208,12 @@ class CategoriesController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors(), 'status' => 'Bad Request'], 400);
+            return response()->json(['message' => $validator->errors(), 'status' => 'failed'], 400);
         }
     
         $category = Category::find($id);
         if (!$category) {
-            return response()->json(['message' => 'Category not found', 'status' =>  'Not Found'], 404);
+            return response()->json(['message' => 'Category not found', 'status' =>  'failed'], 404);
         }
     
         $data = $request->only('name', 'description','status');
@@ -235,8 +232,7 @@ class CategoriesController extends Controller
         $category->update($data);
         
         
-        $updatedCategory = Category::find($id);
-        return response()->json(['data' => $updatedCategory, 'status' => 'Ok'], 200);
+        return response()->json(['message' => "The category has been updated successfully", 'status' => 'success'], 200);
     }
     
     
@@ -244,7 +240,7 @@ class CategoriesController extends Controller
     {
         $category = Category::find($id);
         if (!$category) {
-            return response()->json(['message' => 'Category not found', 'status' => 'Not Found'], 404);
+            return response()->json(['message' => 'Category not found', 'status' => 'failed'], 404);
         }
 
         if ($category->image) {
@@ -252,7 +248,7 @@ class CategoriesController extends Controller
         }
 
         $category->delete();
-        return response()->json(['message' => 'Category deleted successfully', 'status' => 'Ok'], 200);
+        return response()->json(['message' => 'Category deleted successfully', 'status' => 'success'], 200);
     }
 
     // meals get data

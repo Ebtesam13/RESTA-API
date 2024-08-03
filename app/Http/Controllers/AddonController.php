@@ -163,7 +163,7 @@ class AddonController extends Controller
         ));
 
         if ($new_addon) {
-            return response()->json(['status' => 'success', 'data' => $new_addon], 201);
+            return response()->json(['status' => 'success', 'message' => "The addon has been added successfully"], 201);
         } else {
             return response()->json(['status' => 'failed', 'error' => 'Error during addon addition'], 400);
         }
@@ -197,7 +197,7 @@ class AddonController extends Controller
             }
     
             $addon->update($request->except('image'));
-            return response()->json(['status' => 'success', 'data' => $addon], 200);
+            return response()->json(['status' => 'success', 'message' => "The addon has been updated successfully"], 200);
         }
         return response()->json(['status' => 'failed', 'error' => 'Addon not found'], 404);
     }
@@ -283,11 +283,6 @@ class AddonController extends Controller
         }
 
         $mealWithAddon = MealWithAddon::create($request->all());
-        // $newDataAddon = [
-        //         'meal_name' => $mealWithAddon->meal->name,
-        //         'addon_name' => $mealWithAddon->addon->name,  
-        // ];
-
         return response()->json(['status' => 'success', 'message' => 'Meal with addon successfully created'], 201);
     }
 

@@ -103,7 +103,6 @@ class ExtraController extends Controller
             'data' => $extras,
         ], 200);
     }
-    
 
     // Fetch extra by ID
     public function show($id)
@@ -161,7 +160,7 @@ class ExtraController extends Controller
         ));
 
         if ($extra) {
-            return response()->json(['status' => 'success', 'data' => $extra], 201);
+            return response()->json(['status' => 'success', 'message' => "The extra has been added successfully"], 201);
         } else {
             return response()->json(['status' => 'failed', 'error' => 'Error during extra addition'], 400);
         }

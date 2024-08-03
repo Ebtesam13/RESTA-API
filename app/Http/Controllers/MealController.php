@@ -113,9 +113,6 @@ class MealController extends Controller
         return response()->json(['status' => 'success', 'data' => $dataMeal], 200);
     }
 
-    // Fetch addons link meal id
-
-
     // Add a new meal
     public function store(Request $request)
     {
@@ -160,9 +157,9 @@ class MealController extends Controller
             }
             DB::commit();
 
-            $newMealData = $this->DataMeal($newMeal);
+            // $newMealData = $this->DataMeal($newMeal);
 
-            return response()->json(['status' => 'success', 'data' => $newMealData], 201);
+            return response()->json(['status' => 'success', 'message' => "The meal has been added successfully"], 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['status' => 'error', 'message' => $e->message()], 500);
@@ -201,11 +198,11 @@ class MealController extends Controller
             'status' => $validatedData['status'] ?? $meal->status,
         ]);
 
-        $meal->refresh();
+        // $meal->refresh();
 
-        $formattedMeal = $this->DataMeal($meal);
+        // $formattedMeal = $this->DataMeal($meal);
 
-        return response()->json(['status' => 'success', 'data' => $formattedMeal], 200);
+        return response()->json(['status' => 'success', 'message' => "The meal has been updated successfully"], 200);
     }
 
     //add  size
