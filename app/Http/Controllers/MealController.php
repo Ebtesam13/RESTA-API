@@ -95,7 +95,6 @@ class MealController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $DataMeals], 200);
     }
-
     // Fetch meal by ID
     public function show($id)
     {
@@ -111,6 +110,37 @@ class MealController extends Controller
 
         $dataMeal = $this->DataMeal($meal);
         return response()->json(['status' => 'success', 'data' => $dataMeal], 200);
+    }
+
+    // Fetch size and cost to meal by ID
+    public function showSizeCost($mealId)
+    {
+        $meal = Meal::find($mealId);
+
+        if (!$meal) {
+            return response()->json(['status' => 'failed', 'error' => 'Meal not found'], 404);
+        }
+
+        $mealSizeCosts = $meal->mealSizeCosts;
+
+        $DataMealSizeCosts = $mealSizeCosts->map(function ($sizeCost) {
+            $costData = [
+                'meal_id' => $sizeCost->meal_id,
+                'cost' => $sizeCost->cost,
+            ];
+
+            if (!is_null($sizeCost->number_of_pieces)) {
+                $costData['number_of_pieces'] = $sizeCost->number_of_pieces;
+            }
+
+            if (!is_null($sizeCost->size)) {
+                $costData['size'] = $sizeCost->size;
+            }
+
+            return $costData;
+        });
+
+        return response()->json(['status' => 'success', 'data' => $DataMealSizeCosts], 200);
     }
 
     // Add a new meal

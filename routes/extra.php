@@ -12,7 +12,7 @@ Route::group(['middleware'=>'checkAdminToken'],function(){
     Route::delete('admin/extras/{id}', [ExtraController::class, 'destroy']);
     Route::post('admin/meals/extras',[ExtraController::class,'storeExtraMeals']);
     Route::get('admin/extras-filter', [ExtraController::class, 'filterExtra']);
-    Route::delete('admin/extras-meals/{extra_id}/{meal_id}', [ExtraController::class, 'destroyAddonsMeal']);
+    Route::delete('admin/extras-meals/{extra_id}/{meal_id}', [ExtraController::class, 'destroyExtrasMeal']);
     Route::get('admin/meals/{meal_id}/options-extras', [ExtraController::class, 'indexMealExtra']);
 });
 

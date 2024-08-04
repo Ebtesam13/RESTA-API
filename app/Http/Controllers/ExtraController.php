@@ -261,7 +261,7 @@ class ExtraController extends Controller
     }
 
     // Delete a destroy Addons Meal
-    public function destroyAddonsMeal($extra_id , $meal_id)
+    public function destroyExtrasMeal($extra_id , $meal_id)
     {
         $deletedRows = Meal_extra::where('meal_id', $meal_id)->where('extra_id', $extra_id)->delete();
     
@@ -310,6 +310,5 @@ class ExtraController extends Controller
          ], 200);
      }
      
-
 
 }
