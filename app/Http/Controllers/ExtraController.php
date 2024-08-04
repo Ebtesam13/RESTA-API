@@ -231,6 +231,8 @@ class ExtraController extends Controller
             return [
                 'extra_id' => $mealExtra->extra->id,
                 'extra_name' => $mealExtra->extra->name,
+                'status' => $mealExtra->extra->status,
+
             ];
         });
 

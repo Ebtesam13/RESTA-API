@@ -52,7 +52,7 @@ class OfferController extends Controller
         ],404);
         return response()->json([
             'status'=>'success',
-            'Items'=>$items
+            'data'=>$items
         ],200);
 
     }
@@ -115,7 +115,7 @@ class OfferController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'Items' => $offerItems
+            'data' => $offerItems
         ], 200);
     }
 
@@ -176,7 +176,7 @@ class OfferController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'offers' =>  $offersData
+            'data' =>  $offersData
         ], 200);
     }
 
@@ -239,7 +239,7 @@ class OfferController extends Controller
         ], 404);
         return response()->json([
             'status' => 'success',
-            'offer' => $offer
+            'data' => $offer
         ], 200);
     }
 

@@ -427,7 +427,7 @@ class OrderController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'Transactions' => $transactions->items(),
+            'data' => $transactions->items(),
             'pagination' => $pagination
         ]);
     }

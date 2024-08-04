@@ -317,6 +317,7 @@ class AddonController extends Controller
             return [
                 'addon_id' => $mealWithAddon->addon->id,
                 'addon_name' => $mealWithAddon->addon->name,
+                'status' => $mealWithAddon->addon->status,
             ];
         });
     
