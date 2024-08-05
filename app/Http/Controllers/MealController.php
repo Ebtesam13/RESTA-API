@@ -153,10 +153,9 @@ class MealController extends Controller
             'category_id' => 'required|exists:categories,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,bmp,svg',
             'status' => 'sometimes|boolean',
-            'meal_size_costs' => 'required|array',
-            'meal_size_costs.*.number_of_pieces' => ['required_without_all:meal_size_costs.*.size', 'integer', 'min:1'],
-            'meal_size_costs.*.size' => ['required_without_all:meal_size_costs.*.number_of_pieces', 'integer', 'min:1', ' max:4'],
-            'meal_size_costs.*.cost' => ['required', 'numeric', 'min:1'],
+            'size' => ['required', 'integer', 'min:1', 'max:4'],
+            'cost' => ['required', 'numeric', 'min:1'],
+            'number_of_pieces' => ['sometimes', 'integer', 'min:1'],
         ]);
 
         $imagePath = $this->handleImageUpload($request);
@@ -164,7 +163,6 @@ class MealController extends Controller
         DB::beginTransaction();
 
         try {
-
             $newMeal = Meal::create([
                 'name' => $validatedData['name'],
                 'description' => $validatedData['description'],
@@ -174,25 +172,18 @@ class MealController extends Controller
                 'status' => $validatedData['status'] ?? true,
             ]);
 
-            if (isset($validatedData['meal_size_costs'])) {
-                foreach ($validatedData['meal_size_costs'] as $sizeCost) {
-                    if (isset($sizeCost['cost'])) {
-                        $newMeal->mealSizeCosts()->create([
-                            'size' => $sizeCost['size'] ?? null,
-                            'cost' => $sizeCost['cost'],
-                            'number_of_pieces' => $sizeCost['number_of_pieces'] ?? null,
-                        ]);
-                    }
-                }
-            }
-            DB::commit();
+            $newMeal->mealSizeCosts()->create([
+                'size' => $validatedData['size'],
+                'cost' => $validatedData['cost'],
+                'number_of_pieces' => $validatedData['number_of_pieces'] ?? null,
+            ]);
 
-            // $newMealData = $this->DataMeal($newMeal);
+            DB::commit();
 
             return response()->json(['status' => 'success', 'message' => "The meal has been added successfully"], 201);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['status' => 'error', 'message' => $e->message()], 500);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -236,7 +227,7 @@ class MealController extends Controller
     }
 
     //add  size
-    public function addMealSizeCost(Request $request, $mealId)
+    public function updateMealSizeCost(Request $request, $mealId)
     {
         $meal = Meal::find($mealId);
         if (!$meal) {
@@ -264,10 +255,10 @@ class MealController extends Controller
             ]);
         }
     
-        $meal->refresh();
-        $formattedMeal = $this->DataMeal($meal);
+        // $meal->refresh();
+        // $formattedMeal = $this->DataMeal($meal);
     
-        return response()->json(['status' => 'success', 'data' => $formattedMeal], 200);
+        return response()->json(['status' => 'success', 'message' => "The meal has been updated successfully"], 200);
     }
     
     // Delete a meal

@@ -196,7 +196,7 @@ class CategoriesController extends Controller
         $newCategory = Category::create($data);
         // $responseData = array_merge($newCategory->toArray(), ['status' => $newCategory->status]);
 
-        return response()->json(['message' => "The addon has been added successfully", 'status' => 'success'], 201);
+        return response()->json(['message' => "The category has been added successfully", 'status' => 'success'], 201);
     }
     
     public function updateCategory(Request $request, $id)
